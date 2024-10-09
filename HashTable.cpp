@@ -8,18 +8,18 @@ using namespace std;
 
 class HashTable {
 private:
-    int tableSize;  // Actual size of the table
-    int currentSize;  // Number of elements in the table
+    int tableSize;  //actual size of the table
+    int currentSize;  //number of elements in the table
     vector<pair<int, int>> table;
     vector<bool> isDeleted;
-    int maxProbes;  // Variable for controlling the number of probes
+    const double loadFactorThresh = 0.8;
 
-    // Hash function: key mod table size
+    // Predefined Hash function: key mod table size
     int hashFunction(int key) {
         return key % tableSize;
     }
 
-    // Function to check if a number is prime
+    //defined a function to check if number is a prime or not
     bool isPrime(int n) {
         if (n <= 1) return false;
         if (n == 2) return true;
@@ -30,7 +30,7 @@ private:
         return true;
     }
 
-    // Function to find the next prime number greater than or equal to n
+    //defined a function to find the next prime number greater than or equal to n
     int nextPrime(int n) {
         while (!isPrime(n)) {
             n++;
@@ -38,7 +38,7 @@ private:
         return n;
     }
 
-    // Function to resize the hash table when the load factor exceeds 70%
+    //defined a function to resize the hash table when the load factor exceeds 0.8
     void resize() {
         int newSize = nextPrime(tableSize * 2);
         vector<pair<int, int>> oldTable = table;
@@ -53,7 +53,7 @@ private:
         tableSize = newSize;
         currentSize = 0;
 
-        // Rehash old values
+        // Rehash all old values
         for (int i = 0; i < oldTable.size(); ++i) {
             if (oldTable[i].first != -1 && !oldIsDeleted[i]) {
                 this->insert(oldTable[i].first);  // Reinsert into the new table
@@ -67,15 +67,14 @@ public:
         table.resize(tableSize, {-1, -1});  // Initialize all slots to (-1, -1) (empty)
         isDeleted.resize(tableSize, false);
         currentSize = 0;
-        maxProbes = tableSize;  // Set maximum probes to table size
     }
 
-    // Function to insert a key using quadratic probing
+    //defined a function to insert a key using quadratic probing
     void insert(int key) {
         int index = hashFunction(key);
         int i = 0;  // Quadratic probing counter
 
-        while (i < maxProbes) {
+        while (i*i < tableSize) {
             int newIndex = (index + i * i) % tableSize;
 
             // Check for duplicate keys
@@ -90,8 +89,8 @@ public:
                 isDeleted[newIndex] = false;
                 currentSize++;
 
-                // Resize if load factor exceeds 70%
-                if (currentSize * 100 / tableSize > 70) {
+                //resize the table if load factor exceeds 0.8
+                if ((double)currentSize / tableSize > loadFactorThresh) {
                     resize();
                 }
                 return;
@@ -108,7 +107,7 @@ public:
         int index = hashFunction(key);
         int i = 0;
 
-        while (i < maxProbes) {
+        while (i*i < tableSize) {
             int newIndex = (index + i * i) % tableSize;
 
             if (table[newIndex].first == key && !isDeleted[newIndex]) {
@@ -135,7 +134,7 @@ public:
         int index = hashFunction(key);
         int i = 0;
 
-        while (i < maxProbes) {
+        while (i*i < tableSize) {
             int newIndex = (index + i * i) % tableSize;
 
             if (table[newIndex].first == key && !isDeleted[newIndex]) {
