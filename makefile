@@ -1,5 +1,5 @@
 default:
-	# write command to test your files (you do not need it for your submissions)
+	g++ -std=c++11 main.cpp HashTable.cpp -o resulting && ./resulting
 
 clean:
 	rm *.out
