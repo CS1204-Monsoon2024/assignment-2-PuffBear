@@ -1,5 +1,10 @@
-default:
-	g++ main.cpp -o main.out
+default: main.out
+
+main.out: main.cpp
+	g++ -std=c++11 main.cpp -o main.out
+
+run: main.out
+	./main.out
 
 clean:
-	rm *.out
+	rm -f main.out
