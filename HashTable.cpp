@@ -69,8 +69,6 @@ public:
         currentSize = 0;
     }
 
-    HashTable& operator=(const HashTable&) = delete;
-
     //defined a function to insert a key using quadratic probing
     void insert(int key) {
         int index = hashFunction(key);
