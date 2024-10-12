@@ -1,5 +1,5 @@
 default:
-	g++ -std=c++11 main.cpp -o main.out
+	g++ -std=c++11 main.cpp -o ./main.out
 
 run: main.out
 	./main.out
