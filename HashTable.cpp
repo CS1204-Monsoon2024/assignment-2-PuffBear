@@ -10,7 +10,7 @@ class HashTable {
 private:
     int tableSize;  //actual size of the table
     int currentSize;  //number of elements in the table
-    vector<pair<int, int>> table;
+    vector<pair<int, int> > table;
     vector<bool> isDeleted;
     const double loadFactorThresh = 0.8;
 
@@ -62,7 +62,7 @@ private:
     }
 
 public:
-    HashTable(int initialSize) {
+    HashTable(int initialSize): loadFactorThresh(0.8) {
         tableSize = nextPrime(initialSize);
         table.resize(tableSize, {-1, -1});  // Initialize all slots to (-1, -1) (empty)
         isDeleted.resize(tableSize, false);
