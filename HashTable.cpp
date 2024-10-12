@@ -62,7 +62,7 @@ private:
     }
 
 public:
-    HashTable(int initialSize): loadFactorThresh(0.8) {
+    HashTable(int initialSize) {
         tableSize = nextPrime(initialSize);
         table.resize(tableSize, {-1, -1});  // Initialize all slots to (-1, -1) (empty)
         isDeleted.resize(tableSize, false);
