@@ -1,8 +1,5 @@
 default:
-	g++ -std=c++11 main.cpp HashTable.cpp -o main.out
-
-run: main.out
-	./main.out
+	#(not needed)
 
 clean:
-	rm -f main.out
+	rm *.out
