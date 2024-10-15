@@ -69,6 +69,16 @@ public:
         currentSize = 0;
     }
 
+    // Move constructor
+    HashTable(HashTable&& other) noexcept;
+
+    // Move assignment operator
+    HashTable& operator=(HashTable&& other) noexcept;
+
+    // Delete copy constructor and copy assignment operator
+    HashTable(const HashTable&) = delete;
+    HashTable& operator=(const HashTable&) = delete;
+
     //defined a function to insert a key using quadratic probing
     void insert(int key) {
         int index = hashFunction(key);
