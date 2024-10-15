@@ -1,8 +1,7 @@
 #include "HashTable.cpp"
 
 int main() {
-    int initialSize = 7; 
-    HashTable ht(initialSize);
+    HashTable ht(7);
 
     // Example test case
     ht.insert(1);
