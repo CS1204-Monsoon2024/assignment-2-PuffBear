@@ -65,14 +65,13 @@ public:
         int idx = hashFunction(key);
         int i = 0;
 
-        while (i < size) {  // Allow probing up to the full size of the table
+        while (i < size) {  
             int probeIdx = (idx + i * i) % size;
             if (table[probeIdx] == EMPTY || table[probeIdx] == DELETED) {
                 table[probeIdx] = key;
                 count++;
                 return;
             } else if (table[probeIdx] == key) {
-                std::cout << "Duplicate key insertion is not allowed" << std::endl;
                 return;
             }
             i++;
@@ -82,7 +81,6 @@ public:
         std::cout << "Max probing limit reached!" << std::endl;
     }
 
-    // Search function
     int search(int key) {
         int idx = hashFunction(key);
         int i = 0;
@@ -99,7 +97,6 @@ public:
         return -1;  
     }
 
-    // Remove function
     void remove(int key) {
         int idx = search(key);
         if (idx == -1) {
@@ -110,10 +107,11 @@ public:
         count--;
     }
 
-    // Print the hash table
     void printTable() {
         for (int i = 0; i < size; i++) {
-            if (table[i] == EMPTY || table[i] == DELETED) {
+            if (table[i] == EMPTY) {
+                std::cout << "- ";
+            } else if (table[i] == DELETED) {
                 std::cout << "- ";
             } else {
                 std::cout << table[i] << " ";
