@@ -11,7 +11,6 @@ private:
     int DELETED;          
     double loadFactorThreshold; 
 
-    // Function to calculate the next prime number >= n
     int nextPrime(int n) {
         while (!isPrime(n)) {
             n++;
@@ -19,7 +18,6 @@ private:
         return n;
     }
 
-    // Check if a number is prime
     bool isPrime(int n) {
         if (n <= 1) return false;
         if (n == 2 || n == 3) return true;
@@ -30,17 +28,15 @@ private:
         return true;
     }
 
-    // Hash function
     int hashFunction(int key) {
         return key % size;
     }
 
-    // Resizing the hash table 
+    //dynamic resizing
     void resize() {
         int oldSize = size;
         std::vector<int> oldTable = table;
 
-        // Resize the table to a new prime size
         size = nextPrime(2 * oldSize);
         table = std::vector<int>(size, EMPTY);
         count = 0;
@@ -58,10 +54,9 @@ public:
         : EMPTY(-1), DELETED(-2), loadFactorThreshold(0.8) { 
         size = nextPrime(initialSize);  
         table = std::vector<int>(size, EMPTY);  
-        count = 0;  // No elements are inserted 
+        count = 0;  //no elements inserted 
     }
 
-    // Insert function
     void insert(int key) {
         if ((double)count / size > loadFactorThreshold) {
             resize();
@@ -70,21 +65,21 @@ public:
         int idx = hashFunction(key);
         int i = 0;
 
-        // Quadratic probing
-        while (table[(idx + i * i) % size] != EMPTY && table[(idx + i * i) % size] != DELETED) {
-            if (table[(idx + i * i) % size] == key) {
+        while (i < size) {  // Allow probing up to the full size of the table
+            int probeIdx = (idx + i * i) % size;
+            if (table[probeIdx] == EMPTY || table[probeIdx] == DELETED) {
+                table[probeIdx] = key;
+                count++;
+                return;
+            } else if (table[probeIdx] == key) {
                 std::cout << "Duplicate key insertion is not allowed" << std::endl;
                 return;
             }
             i++;
-            if (i == size / 2 + 1) {
-                std::cout << "Max probing limit reached!" << std::endl;
-                return;
-            }
         }
 
-        table[(idx + i * i) % size] = key;
-        count++;
+        // If we exhaust all attempts to insert
+        std::cout << "Max probing limit reached!" << std::endl;
     }
 
     // Search function
@@ -92,17 +87,16 @@ public:
         int idx = hashFunction(key);
         int i = 0;
 
-        // Quadratic probing for search
-        while (table[(idx + i * i) % size] != EMPTY) {
-            if (table[(idx + i * i) % size] == key) {
-                return (idx + i * i) % size;
+        while (i < size) {
+            int probeIdx = (idx + i * i) % size;
+            if (table[probeIdx] == EMPTY) {
+                return -1;  
+            } else if (table[probeIdx] == key) {
+                return probeIdx;
             }
             i++;
-            if (i == size / 2 + 1) {
-                break;
-            }
         }
-        return -1;  // Not found
+        return -1;  
     }
 
     // Remove function
